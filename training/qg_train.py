@@ -8,6 +8,8 @@ from trainer import Trainer
 
 from datasets import load_dataset
 
+from sklearn.model_selection import train_test_split
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -44,26 +46,19 @@ def get_model(checkpoint: str, device: str, tokenizer: MT5Tokenizer) -> MT5ForCo
 if __name__ == "__main__":
     args = parse_args()
     tokenizer = get_tokenizer(args.qg_model)
+    data_files = {"train": "train.csv", "validation": "validation.csv"}
+    dataset = load_dataset("csv", data_files=data_files)
     #dataset = datasets.load_dataset("iarfmoose/question_generator")
-    #print(dataset['train'])
-    #print(dataset['validation'])
-    #val_ds = datasets.load_dataset("bookcorpus", split=[f"train[{k}%:{k+10}%]" for k in range(0, 100, 10)])
-    #train_ds = datasets.load_dataset("bookcorpus", split=[f"train[:{k}%]+train[{k+10}%:]" for k in range(0, 100, 10)])
-    #dataset = load_dataset("csv", data_files="data_file.csv")
-    dataset_train = load_dataset("csv", data_files="data_file.csv", split=[f"train[:{k}%]+train[{k+10}%:]" for k in range(0, 100, 10)])
-    dataset_validation = load_dataset("csv", data_files="data_file.csv", split=[f"train[{k}%:{k+10}%]" for k in range(0, 100, 10)])
-
-    #train_set = QGDataset(dataset["train"], args.max_length, args.pad_mask_id, tokenizer)
-    #valid_set = QGDataset(dataset["validation"], args.max_length, args.pad_mask_id, tokenizer)
-
+    print(dataset['train'])
+    print(dataset['validation'])
     
-    train_set = QGDataset(dataset_train, args.max_length, args.pad_mask_id, tokenizer)
-    valid_set = QGDataset(dataset_validation, args.max_length, args.pad_mask_id, tokenizer)
-    
+
+    train_set = QGDataset(dataset["train"], args.max_length, args.pad_mask_id, tokenizer)
+    valid_set = QGDataset(dataset["validation"], args.max_length, args.pad_mask_id, tokenizer)
+
     print(train_set)
-
     print(valid_set)
-    
+
     model = get_model(args.qg_model, args.device, tokenizer)
     trainer = Trainer(
         dataloader_workers=args.dataloader_workers,
