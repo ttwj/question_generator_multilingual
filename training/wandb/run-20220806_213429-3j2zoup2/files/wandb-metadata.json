@@ -1,0 +1,24 @@
+{
+    "os": "Windows-10-10.0.22000-SP0",
+    "python": "3.8.3",
+    "heartbeatAt": "2022-08-06T13:34:30.358812",
+    "startedAt": "2022-08-06T13:34:29.021440",
+    "docker": null,
+    "gpu": "NVIDIA GeForce GT 730",
+    "gpu_count": 1,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "qg_train.py",
+    "codePath": "training\\qg_train.py",
+    "git": {
+        "remote": "git@github.com:ttwj/question_generator_multilingual.git",
+        "commit": "d363d0bfb6550bdfd37dd71f93c128165f0b5492"
+    },
+    "email": "terencetanwj@gmail.com",
+    "root": "C:/Users/tanyj/Downloads/AI_Project/question_generator",
+    "host": "DESKTOP-18EU7NN",
+    "username": "tanyj",
+    "executable": "C:\\Python38\\python.exe"
+}

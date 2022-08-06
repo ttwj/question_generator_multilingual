@@ -7,6 +7,8 @@ from transformers import AutoTokenizer
 
 from utils import AverageMeter
 
+import wandb
+
 
 class Trainer:
     def __init__(
@@ -25,6 +27,7 @@ class Trainer:
         valid_set: Dataset,
         evaluate_on_accuracy: bool = False
     ) -> None:
+        self.wandb = wandb.init(project="multi-lingual-question-generator", entity="ttwj")
         self.device = device
         self.epochs = epochs
         self.save_dir = save_dir
@@ -46,6 +49,9 @@ class Trainer:
         )
         self.tokenizer = tokenizer
         self.model = model.to(self.device)
+
+        self.wandb.watch(self.model, log_freq=100)
+
         self.optimizer = AdamW(self.model.parameters(), lr=learning_rate)
         self.train_loss = AverageMeter()
         self.evaluate_on_accuracy = evaluate_on_accuracy
@@ -70,6 +76,7 @@ class Trainer:
                     self.optimizer.step()
                     self.train_loss.update(loss.item(), self.train_batch_size)
                     tepoch.set_postfix({"train_loss": self.train_loss.avg})
+                    wandb.log({"loss": self.train.avg})
                     tepoch.update(1)
 
             if self.evaluate_on_accuracy:
