@@ -15,7 +15,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataloader_workers", type=int, default=2)
     parser.add_argument("--device", type=str, default="cpu")
-    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--learning_rate", type=float, default=1e-3)
     parser.add_argument("--max_length", type=int, default=512)
     parser.add_argument("--qg_model", type=str, default="google/mt5-small")
@@ -46,7 +46,7 @@ def get_model(checkpoint: str, device: str, tokenizer: MT5Tokenizer) -> MT5ForCo
 if __name__ == "__main__":
     args = parse_args()
     tokenizer = get_tokenizer(args.qg_model)
-    data_files = {"train": "train.csv", "validation": "validation.csv"}
+    data_files = {"train": ["train_en.csv", "train_zh.csv"], "validation": ["validation_en.csv", "validation_zh.csv"]}
     dataset = load_dataset("csv", data_files=data_files)
     #dataset = datasets.load_dataset("iarfmoose/question_generator")
     print(dataset['train'])

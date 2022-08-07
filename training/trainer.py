@@ -27,7 +27,7 @@ class Trainer:
         valid_set: Dataset,
         evaluate_on_accuracy: bool = False
     ) -> None:
-        self.wandb = wandb.init(project="multi-lingual-question-generator", entity="ttwj")
+        self.wandb = wandb.init(project="multi-lingual-question-generator-en-zh", entity="ttwj")
         self.device = device
         self.epochs = epochs
         self.save_dir = save_dir
@@ -50,7 +50,7 @@ class Trainer:
         self.tokenizer = tokenizer
         self.model = model.to(self.device)
 
-        self.wandb.watch(self.model, log_freq=100)
+        #self.wandb.watch(self.model, log_freq=100)
 
         self.optimizer = AdamW(self.model.parameters(), lr=learning_rate)
         self.train_loss = AverageMeter()
